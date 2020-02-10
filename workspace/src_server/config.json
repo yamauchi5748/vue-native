@@ -1,0 +1,6 @@
+{
+    "DBName": "erobloadPortal",
+    "default": {
+        "collectionName": "default"
+    }
+}

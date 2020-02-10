@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const apiRoutes = require('./routes/api');
 const bodyParser = require("body-parser");
 const debug = require("debug")("myapp:logs");
 // ログで出力する際の色を指定
@@ -30,6 +31,9 @@ app.use(require("morgan")('combined', {
 app.use(bodyParser.json());
 
 app.use(express.static("./public"));
+
+// ルーティング設定
+app.use(apiRoutes);
 
 io.on('connection', function (socket) {
     debug('connected');
