@@ -21,7 +21,13 @@ class Model {
 
     async insert(model) {
 
-        const result = await dbo.insert(DB_name, this.collection_name, model);
+        let obj = {};
+
+        this.fillable.map(key => {
+            obj[key] = model[key];
+        });
+
+        const result = await dbo.insert(DB_name, this.collection_name, obj);
 
         return result;
     };
