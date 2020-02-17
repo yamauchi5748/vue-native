@@ -1,6 +1,12 @@
 {
-    "DBName": "erobloadPortal",
+    "DBName": "vueNative",
     "default": {
         "collectionName": "default"
+    },
+    "Qiita": {
+        "auth": {
+            "access_token": "2cbd6e9b523955c80209cbe820f17cd48f21aa00"
+        },
+        "uri": "https://qiita.com/api/v2/"
     }
 }

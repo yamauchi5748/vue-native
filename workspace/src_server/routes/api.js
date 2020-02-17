@@ -7,5 +7,6 @@ const content = require('../models/Content');
 const contentsController = require('../controller/ContentsController');
 
 router.get('/api/contents', contentsController.index);
+router.get('/api/contents/store', contentsController.store);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const Mongo = require('mongodb')
 const MongoClient = Mongo.MongoClient;
-const url = 'mongodb://0.0.0.0:27017';
+const url = 'mongodb://mongo:27017';
 
 //DBからObjectを取得
 exports.aggregate = function (DB_name, collection, key) {
