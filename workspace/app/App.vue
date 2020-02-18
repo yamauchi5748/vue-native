@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import TheGlobalHeader from "./components/TheGlobalHeader";
 import TheContents from "./components/TheContents";
 

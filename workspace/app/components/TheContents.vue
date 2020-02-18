@@ -2,60 +2,46 @@
   <scroll-view class="container">
     <touchable-opacity class="contents" v-for="(content,index) in contents" :key="index">
       <view class="contents__meta">
-        <text class="contents__meta-name">name</text>
-        <text class="contents__meta-time">50分前</text>
+        <text class="contents__meta-name">{{ content.user.id }}</text>
+        <text class="contents__meta-time">{{ content.created_at }}</text>
       </view>
       <view class="contents__body">
-        <text>texttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttexttext</text>
+        <text>{{ content.title }}</text>
       </view>
-      <view class="contents__tag">
-        <text>tag</text>
+      <view class="contents__good">
+        <text class="contents__good-text">{{ content.likes_count }} いいね</text>
       </view>
     </touchable-opacity>
-    <view v-if="true" :style="{flex: 1, justifyContent: 'center'}">
+    <view v-if="loading" :style="{flex: 1, justifyContent: 'center'}">
       <activity-indicator size="large" color="#0000ff" />
-    </view>
-    <text class="text-color-primary">{{ getMessage }}</text>
-    <button v-bind:title="message" v-bind:on-press="handleBtnPress" />
-    <text>{{text}}</text>
-    <text-input
-      :style="{height: 40, width: 100, borderColor: 'gray', borderWidth: 1}"
-      v-model="text"
-    />
-    <view>
-      <image
-        :style="{width: 50, height: 50}"
-        :source="{uri: 'https://facebook.github.io/react-native/docs/assets/favicon.png'}"
-      />
     </view>
   </scroll-view>
 </template>
 
 <script>
 import axios from "axios";
+import Store from "../store";
 
 export default {
   data() {
-    return {
-      message: "メッセージ",
-      text: "",
-      contents: [{}]
-    };
+    return {};
   },
   created() {
-    axios("http://10.138.17.239:8080/api/contents").then(res => {
-      this.contents.splice(this.contents.length, 0, ...res.data);
-      console.log(res.data, this.contents.length);
+    axios("http://192.168.0.4:8080/api/contents").then(res => {
+      res.data.forEach(content => {
+        Store.dispatch("addContents", content);
+      });
+      Store.dispatch("changeLoading");
     });
   },
   computed: {
-    getMessage() {
-      return this.message;
-    }
-  },
-  methods: {
-    handleBtnPress: function() {
-      alert("Btn Press");
+    contents: function() {
+      return Store.getters.activeStatus == "デイリー"
+        ? Store.getters.dailyContents
+        : Store.getters.weeklyContents;
+    },
+    loading: function() {
+      return Store.getters.loading;
     }
   }
 };
@@ -93,6 +79,13 @@ export default {
 }
 
 .contents__body {
+  margin: 10px;
+  margin-left: 0;
+  margin-right: 0;
   padding: 0 10px;
+}
+
+.contents__good-text {
+  color: deeppink;
 }
 </style>

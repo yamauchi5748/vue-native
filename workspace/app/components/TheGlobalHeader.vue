@@ -7,7 +7,7 @@
       <v-nav-btn
         :item="nav"
         v-on:change="changeHandler"
-        v-for="(nav, index) of nav_list"
+        v-for="(nav, index) of navigations"
         :key="index"
       />
     </view>
@@ -15,29 +15,21 @@
 </template>
 
 <script>
+import Store from "../store";
 import VNavBtn from "./VNavBtn";
 
 export default {
   components: {
     VNavBtn
   },
-  data() {
-    return {
-      nav_list: [
-        { value: "デイリー", active: true },
-        { value: "週間", active: false }
-      ]
-    };
+  computed: {
+    navigations: function() {
+      return Store.getters.navigations;
+    }
   },
   methods: {
-    changeHandler: function(item) {
-      this.nav_list.forEach(nav => {
-        // データリスト初期化
-        this.$set(nav, "active", false);
-
-        // データリストをリアクティブに変更するため
-        if (item.value === nav.value) this.$set(nav, "active", true);
-      });
+    changeHandler: function(nav) {
+      Store.dispatch("changeNavigations", nav);
     }
   }
 };
