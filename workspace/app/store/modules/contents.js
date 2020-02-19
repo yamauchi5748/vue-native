@@ -1,3 +1,4 @@
+import axios from "axios";
 import moment from 'moment';
 
 const state = {
@@ -22,21 +23,21 @@ const getters = {
 }
 // actions
 const actions = {
-    addContents({ commit }, contents) {
-        commit('addContents', contents);
-    },
-    changeLoading({ commit }, loading) {
-        commit('changeLoading', loading);
-    },
+    getContents({ commit }) {
+        commit('getContents');
+    }
 }
 // mutations
 const mutations = {
-    addContents(state, contents) {
-        state.contents.push(contents);
-    },
-    changeLoading(state) {
-        state.loading = !state.loading;
-    },
+    getContents(state) {
+        state.loading = true;
+        axios("http://172.20.10.3:8080/api/contents").then(res => {
+            res.data.forEach(content => {
+                state.contents.push(content);
+            });
+            state.loading = false;
+        });
+    }
 }
 export default {
     state,

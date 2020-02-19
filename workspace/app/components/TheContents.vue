@@ -2,8 +2,11 @@
   <scroll-view class="container">
     <touchable-opacity class="contents" v-for="(content,index) in contents" :key="index">
       <view class="contents__meta">
-        <text class="contents__meta-name">{{ content.user.id }}</text>
-        <text class="contents__meta-time">{{ content.created_at }}</text>
+        <view class="contents__meta-user">
+          <image class="contents__meta-img" :source="{uri: content.user.profile_image_url}" />
+          <text class="contents__meta-name">{{ content.user.name || content.user.id }}</text>
+        </view>
+        <text class="contents__meta-time">{{ dateFormat(content.created_at) }}</text>
       </view>
       <view class="contents__body">
         <text>{{ content.title }}</text>
@@ -19,7 +22,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import moment from "moment";
 import Store from "../store";
 
 export default {
@@ -27,12 +30,7 @@ export default {
     return {};
   },
   created() {
-    axios("http://192.168.0.4:8080/api/contents").then(res => {
-      res.data.forEach(content => {
-        Store.dispatch("addContents", content);
-      });
-      Store.dispatch("changeLoading");
-    });
+    Store.dispatch("getContents");
   },
   computed: {
     contents: function() {
@@ -42,6 +40,14 @@ export default {
     },
     loading: function() {
       return Store.getters.loading;
+    }
+  },
+  methods: {
+    dateFormat: function(time) {
+      const fromDate = moment(time);
+      const toDate = moment();
+      const diff = toDate.diff(fromDate, "h");
+      return diff < 24 ? `${diff}時間前` : `${toDate.diff(fromDate, "d")}日前`;
     }
   }
 };
@@ -70,7 +76,17 @@ export default {
   justify-content: space-between;
 }
 
+.contents__meta-user {
+  flex-direction: row;
+}
+
+.contents__meta-img {
+  width: 20px;
+  height: 20px;
+}
+
 .contents__meta-name {
+  margin-left: 5px;
   color: #707070;
 }
 
