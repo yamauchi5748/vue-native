@@ -51,11 +51,18 @@ class Model {
 
     };
 
-    async delete() {
+    async delete(_id) {
 
         const object_id = ObjectID(_id);
 
         const result = await dbo.delete(DB_name, this.collection_name, object_id);
+
+        return result;
+    };
+
+    async drop() {
+
+        const result = await dbo.drop(DB_name, this.collection_name);
 
         return result;
     };

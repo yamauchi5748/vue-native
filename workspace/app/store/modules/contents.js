@@ -31,7 +31,7 @@ const actions = {
 const mutations = {
     getContents(state) {
         state.loading = true;
-        axios("http://172.20.10.3:8080/api/contents").then(res => {
+        axios("http://192.168.0.5:8080/api/contents").then(res => {
             res.data.forEach(content => {
                 state.contents.push(content);
             });

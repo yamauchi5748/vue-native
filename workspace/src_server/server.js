@@ -9,6 +9,11 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const PORT = process.env.PORT || 8080;
 
+/* QiitaClient */
+const QiitaClient = require("./qiita");
+
+QiitaClient.exec();
+
 /*
  * middlewareの設定
  */
